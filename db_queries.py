@@ -18,7 +18,7 @@ def insert_query(query, data):
 
 def get_data(query):
     try:
-        cursor = connection.cursor()
+        cursor = connection.cursor(dictionary=True)
         cursor.execute(query)
         rows = cursor.fetchall()
         return rows
