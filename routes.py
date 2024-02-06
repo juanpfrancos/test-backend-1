@@ -1,6 +1,7 @@
 from fastapi import APIRouter,  HTTPException
 from pydantic import BaseModel
 from algorithms import encrypt, decrypt, fibonacci
+from db_queries import insert_query
 import logging
 
 route = APIRouter()
@@ -16,6 +17,21 @@ class BodyFrases(BaseModel):
     frase: str
     a: int
     b: int
+
+class Productos(BaseModel):
+    nombre: str
+    precio: int
+
+class Cajeros(BaseModel):
+    nombre: str
+
+class Maquina(BaseModel):
+    piso: int
+
+class Ventas(BaseModel):
+    producto_id: int
+    cajero_id: int
+    maquina_id: int
 
 @route.post("/frases/encrypt")
 async def encrypt_end(body : BodyFrases):
@@ -48,30 +64,42 @@ async def calcular(number: int):
         raise HTTPException(status_code=500, detail=str(e))
 
 @route.post("/productos")
-async def calcular(parametro: int):
+async def reg_product(producto: Productos):
     try:
-        print()
+        query = "INSERT INTO productos (codigo, nombre, precio) VALUES (%s, %s, %s)"
+        data = (None, producto.nombre, producto.precio)
+        insert_query(query, data)
+        return {"message": "Success!"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 
 @route.post("/cajeros")
-async def calcular(parametro: int):
+async def reg_cajero(cajero: Cajeros):
     try:
-        print()
+        query = "INSERT INTO cajeros (codigo, NomApels) VALUES (%s, %s)"
+        data = (None, cajero.nombre)
+        insert_query(query, data)
+        return {"message": "Success!"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 @route.post("/cajas-registradoras")
-async def calcular(parametro: int):
+async def reg_caja(maq: Maquina):
     try:
-        print()
+        query = "INSERT INTO maquinas_registradoras (codigo, piso) VALUES (%s, %s)"
+        data = (None, maq.piso)
+        insert_query(query, data)
+        return {"message": "Success!"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 @route.post("/ventas-almacen")
-async def calcular(parametro: int):
+async def reg_venta(venta: Ventas):
     try:
-        print()
+        query = "INSERT INTO venta (producto, cajero, maquina) VALUES (%s, %s, %s)"
+        data = (venta.producto_id, venta.cajero_id, venta.maquina_id)
+        insert_query(query, data)
+        return {"message": "Success!"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
