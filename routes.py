@@ -5,17 +5,6 @@ import logging
 route = APIRouter()
 
 """
-•	Crear un end point tipo post para un algoritmo que valide si un número X pertenece a la serie fibonacci
-•	Crear un end point para registrar productos
-•	Crear un end point para registrar cajeros
-•	Crear un end point para registrar máquinas registradoras
-•	Crear un end point para registrar las ventas de un almacén
-•	Crear un end point para consultar el numero de ventas de cada producto con su respectivo código y nombre ordenado de mayor a menor (sql)
-•	Crear un end point para consultar el cajero que ha vendido más productos. (sql)
-•	Crera un end point para consultar el nombre de todos los productos vendidos con su respectivo código de cajero y máquina registradora.(sql)
-"""
-
-"""
 •	Se debe invertir el sentido de la frase o sea, si la frase fuera’ juan’ quedaría ‘nauj’ 
 a demás debe pedir dos números (a, b) como claves para las posiciones par e impar de cada letra de la palabra 
 y se suma a cada letra en el alfabeto (a, b) posiciones. Así, si la clave escogida fuese (a=3,b=4), 
@@ -24,14 +13,39 @@ Para las últimas letras del abecedario se debe continuar  desde el principio de
 """
 class BodyFrases(BaseModel):
     frase: str
-    a: str = None
-    b: float
+    a: int
+    b: int
+
+
+def encrypt(body):
+    alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+    inverted = body.frase[::-1]
+    a = body.a
+    b = body.b
+    encrypted = ''
+    flag = 1
+    for i in inverted:
+        if flag % 2 != 0:
+            actual_position = alphabet.index(i)
+            new_position = actual_position + a
+            encrypted = encrypted + alphabet[new_position]
+        else:
+            actual_position = alphabet.index(i)
+            new_position = actual_position + b
+            encrypted = encrypted + alphabet[new_position]
+        flag += 1
+    return encrypted
 
 @route.post("/frases/encrypt")
 async def calcular(body : BodyFrases):
     try:
-        return {}
+        result = encrypt(body)
+        response = {
+            "encrypted": result,
+        }
+        return response
     except Exception as e:
+        logging.error(e)
         raise HTTPException(status_code=500, detail=str(e))
 
 """
@@ -42,18 +56,21 @@ inverso para realizar este proceso
 @route.post("/frases/decrypt")
 async def calcular(parametro: int):
     try:
+        print()
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 @route.post("/fibonacci")
 async def calcular(parametro: int):
     try:
+        print()
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 @route.post("/productos")
 async def calcular(parametro: int):
     try:
+        print()
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -61,17 +78,20 @@ async def calcular(parametro: int):
 @route.post("/cajeros")
 async def calcular(parametro: int):
     try:
+        print()
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 @route.post("/cajas-registradoras")
 async def calcular(parametro: int):
     try:
+        print()
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 @route.post("/ventas-almacen")
 async def calcular(parametro: int):
     try:
+        print()
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
