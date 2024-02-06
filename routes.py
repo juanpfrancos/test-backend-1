@@ -28,10 +28,14 @@ def encrypt(body):
         if flag % 2 != 0:
             actual_position = alphabet.index(i)
             new_position = actual_position + a
+            if new_position > 27:
+                new_position = new_position - 27
             encrypted = encrypted + alphabet[new_position]
         else:
             actual_position = alphabet.index(i)
             new_position = actual_position + b
+            if new_position > 27:
+                new_position = new_position - 27
             encrypted = encrypted + alphabet[new_position]
         flag += 1
     return encrypted
