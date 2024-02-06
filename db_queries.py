@@ -16,7 +16,7 @@ def insert_query(query, data):
             connection.close()
             print("Conexión cerrada")
 
-def fetch_data(connection, query):
+def get_data(query):
     try:
         cursor = connection.cursor()
         cursor.execute(query)

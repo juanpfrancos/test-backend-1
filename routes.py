@@ -1,7 +1,7 @@
 from fastapi import APIRouter,  HTTPException
 from pydantic import BaseModel
 from algorithms import encrypt, decrypt, fibonacci
-from db_queries import insert_query
+from db_queries import insert_query, get_data
 import logging
 
 route = APIRouter()
@@ -103,3 +103,30 @@ async def reg_venta(venta: Ventas):
         return {"message": "Success!"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+#•	Crear un end point para consultar el numero de ventas de cada producto con su respectivo código y nombre ordenado de mayor a menor (sql)
+@route.get("/ventas-productos")
+async def reg_venta():
+    try:
+         
+        query ="""
+                SELECT 
+                    productos.codigo, 
+                    productos.nombre, 
+                    (SELECT COUNT(*) FROM venta WHERE venta.producto = productos.codigo) AS total_ventas
+                FROM 
+                    productos
+                ORDER BY 
+                    total_ventas DESC;
+                """
+        data = get_data(query)
+        return data
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))    
+"""
+•	Crear un end point para consultar el numero de ventas de cada producto con su respectivo código y nombre ordenado de mayor a menor (sql)
+•	Crear un end point para consultar el cajero que ha vendido más productos. (sql)
+•	Crera un end point para consultar el nombre de todos los productos vendidos con su respectivo código de cajero y máquina registradora.(sql)
+•	Crear un end point para consultar el valor total de las ventas realizadas en cada piso.(sql)
+"""
