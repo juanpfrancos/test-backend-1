@@ -1,5 +1,6 @@
 from fastapi import APIRouter,  HTTPException
 from pydantic import BaseModel
+from algorithms import encrypt, decrypt
 import logging
 
 route = APIRouter()
@@ -16,38 +17,11 @@ class BodyFrases(BaseModel):
     a: int
     b: int
 
-
-def encrypt(body):
-    alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-    inverted = body.frase[::-1]
-    a = body.a
-    b = body.b
-    encrypted = ''
-    flag = 1
-    for i in inverted:
-        if flag % 2 != 0:
-            actual_position = alphabet.index(i)
-            new_position = actual_position + a
-            if new_position > 27:
-                new_position = new_position - 27
-            encrypted = encrypted + alphabet[new_position]
-        else:
-            actual_position = alphabet.index(i)
-            new_position = actual_position + b
-            if new_position > 27:
-                new_position = new_position - 27
-            encrypted = encrypted + alphabet[new_position]
-        flag += 1
-    return encrypted
-
 @route.post("/frases/encrypt")
-async def calcular(body : BodyFrases):
+async def encrypt_end(body : BodyFrases):
     try:
         result = encrypt(body)
-        response = {
-            "encrypted": result,
-        }
-        return response
+        return { "encrypted": result, }
     except Exception as e:
         logging.error(e)
         raise HTTPException(status_code=500, detail=str(e))
@@ -56,11 +30,12 @@ async def calcular(body : BodyFrases):
 • Crear un end point tipo POST para desencriptar las frases encriptadas aplicando el algoritmo 
 inverso para realizar este proceso
 """
-
+  
 @route.post("/frases/decrypt")
-async def calcular(parametro: int):
+async def decrypt_end(body : BodyFrases):
     try:
-        print()
+        result = decrypt(body)
+        return { "decrypted": result, }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
