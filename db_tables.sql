@@ -1,0 +1,25 @@
+CREATE TABLE PRODUCTOS (
+    codigo INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100),
+    precio INT
+);
+
+CREATE TABLE CAJEROS (
+    codigo INT AUTO_INCREMENT PRIMARY KEY,
+    NomApels VARCHAR(255)
+);
+
+CREATE TABLE MAQUINAS_REGISTRADORAS (
+    codigo INT AUTO_INCREMENT PRIMARY KEY,
+    piso INT
+);
+
+CREATE TABLE VENTA (
+    producto INT,
+    cajero INT,
+    maquina INT,
+    PRIMARY KEY (producto, cajero, maquina),
+    FOREIGN KEY (producto) REFERENCES PRODUCTOS(codigo),
+    FOREIGN KEY (cajero) REFERENCES CAJEROS(codigo),
+    FOREIGN KEY (maquina) REFERENCES MAQUINAS_REGISTRADORAS(codigo)
+);
