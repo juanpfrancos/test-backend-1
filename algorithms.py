@@ -39,3 +39,19 @@ def decrypt(body):
             decrypted = decrypted + alphabet[new_position]
         flag += 1
     return decrypted[::-1]
+
+
+def fibonacci(n):
+    x = 0
+    y = 1
+    if n == x or n == y:
+        return True
+    
+    while y < n:
+        fibonacci = x + y
+        x = y
+        y = fibonacci
+        if y == n:
+            return True
+
+    return False

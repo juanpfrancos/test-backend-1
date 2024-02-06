@@ -1,6 +1,6 @@
 from fastapi import APIRouter,  HTTPException
 from pydantic import BaseModel
-from algorithms import encrypt, decrypt
+from algorithms import encrypt, decrypt, fibonacci
 import logging
 
 route = APIRouter()
@@ -40,9 +40,10 @@ async def decrypt_end(body : BodyFrases):
         raise HTTPException(status_code=500, detail=str(e))
 
 @route.post("/fibonacci")
-async def calcular(parametro: int):
+async def calcular(number: int):
     try:
-        print()
+        result = fibonacci(number)
+        return { "fibonacci": result, }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
